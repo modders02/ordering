@@ -7,15 +7,23 @@ import java.util.List;
 
 public class ReceiptSaver {
 
-    private static final String RECEIPT_COUNTER_FILE = "receipt_counter.txt";
+    private static final String RECEIPT_FOLDER_PATH = System.getProperty("user.home") + "/Desktop/receipts";
+    private static final String RECEIPT_COUNTER_FILE = RECEIPT_FOLDER_PATH + "/receipt_counter.txt";
+    private static MenuItemOrderTracker orderTracker = new MenuItemOrderTracker();
 
     public static void saveReceiptToFile(List<MainFrame.MenuItem> cartItems, double total) {
         try {
+            // Ensure the folder exists
+            File receiptFolder = new File(RECEIPT_FOLDER_PATH);
+            if (!receiptFolder.exists()) {
+                receiptFolder.mkdirs(); // create receipts folder on desktop
+            }
+
             int receiptId = getNextReceiptId();
             String receiptIdFormatted = String.format("%04d", receiptId);
 
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String fileName = "receipt_" + timestamp + ".txt";
+            String fileName = RECEIPT_FOLDER_PATH + "/receipt_" + timestamp + ".txt";
 
             PrintWriter writer = new PrintWriter(new FileWriter(fileName));
             writer.println("Receipt: " + receiptIdFormatted);
@@ -57,5 +65,22 @@ public class ReceiptSaver {
         }
 
         return nextId;
+    }
+    
+
+    // Modified to accept allMenuItems as argument
+    private static String getMostOrderedItemName(List<MainFrame.MenuItem> allMenuItems) {
+        int mostOrderedItemId = orderTracker.getMostOrderedItem();
+        if (mostOrderedItemId == -1) {
+            return "No orders yet.";
+        }
+
+        for (MainFrame.MenuItem item : allMenuItems) {
+            if (item.getId() == mostOrderedItemId) {
+                return item.getName();
+            }
+        }
+
+        return "Unknown item";
     }
 }

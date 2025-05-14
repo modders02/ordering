@@ -91,7 +91,36 @@ public abstract class Login_Form extends JFrame {
         btnLogin.addActionListener(e -> onLogin(usernameField.getText(), new String(passwordField.getPassword())));
         btnRegister.addActionListener(e -> onRegister());
         btnAdmin.addActionListener(e -> onAdminLogin());
+        
+        
     }
+    
+    protected void onAdminLogin() {
+        String username = JOptionPane.showInputDialog(this, "Enter Admin Username:");
+        String password = JOptionPane.showInputDialog(this, "Enter Admin Password:");
+
+        boolean isAdminValid = false;
+        for (Account account : adminAccounts) {
+            if (account.getUsername().equals(username) && account.checkPassword(password)) {
+                isAdminValid = true;
+                break;
+            }
+        }
+
+        if (isAdminValid) {
+            JOptionPane.showMessageDialog(this, "Admin login successful!");
+            this.dispose();
+            JFrame adminFrame = new JFrame("Admin Panel");
+            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            adminFrame.setSize(1000, 600);
+            adminFrame.setLocationRelativeTo(null);
+            adminFrame.add(new AdminPanel());
+            adminFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid admin credentials.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     // Abstract methods for implementation in subclass
  // Inside Login_Form.java
@@ -127,5 +156,4 @@ public abstract class Login_Form extends JFrame {
         }
     }
     protected abstract void onRegister();
-    protected abstract void onAdminLogin();
 }
