@@ -3,12 +3,12 @@ package user_interface;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import user_interface.MenuItemOrderTracker;
 
 public class MenuItemOrderTracker {
 
     private static final String ORDER_COUNT_FILE = "order_count.txt";
     private final Map<Integer, Integer> orderCounts;
+
     public Map<Integer, Integer> getAllOrderCounts() {
         return new HashMap<>(orderCounts);
     }
