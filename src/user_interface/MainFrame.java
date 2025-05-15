@@ -36,81 +36,80 @@ public class MainFrame extends JFrame {
         topPanel.add(logoutButton);
         add(topPanel, BorderLayout.NORTH);
 
-        // Initialize menu items with IDs
-        int id = 1;
-        menuItems.add(new MainDish(id++, "Chao Fan", 59));
-        menuItems.add(new MainDish(id++, "Siomai-rice", 70));
-        menuItems.add(new MainDish(id++, "Lauriat", 120));
-        menuItems.add(new MainDish(id++, "Sweet and Sour Pork", 110));
-        menuItems.add(new MainDish(id++, "Beef Mami", 95));
-        menuItems.add(new MainDish(id++, "Wonton Mami", 85));
-        menuItems.add(new MainDish(id++, "Lumpiang Shanghai", 60));
-        menuItems.add(new MainDish(id++, "Yang Chow Fried Rice", 75));
-        menuItems.add(new MainDish(id++, "Pork Chao Fan", 69));
-        menuItems.add(new MainDish(id++, "Chicken Chao Fan", 75));
-        menuItems.add(new MainDish(id++, "Spicy Chao Fan", 80));
-        menuItems.add(new MainDish(id++, "Egg Fried Rice", 50));
-        menuItems.add(new MainDish(id++, "Spicy Siomai Rice", 78));
-        menuItems.add(new MainDish(id++, "Beef Wanton Noodles", 90));
-        menuItems.add(new MainDish(id++, "Tofu Rice Bowl", 65));
-        menuItems.add(new MainDish(id++, "Fish Fillet Lauriat", 130));
-        menuItems.add(new MainDish(id++, "Pancit Canton", 60));
-        menuItems.add(new MainDish(id++, "Pancit Bihon", 65));
-        menuItems.add(new MainDish(id++, "Chopsuey", 70));
-        menuItems.add(new MainDish(id++, "Chicken Curry", 115));
-        menuItems.add(new MainDish(id++, "Spicy Wings", 120));
-        menuItems.add(new MainDish(id++, "Steamed Rice", 40));
-        menuItems.add(new MainDish(id++, "Beef Broccoli", 130));
+        // Manually assigned menu item IDs
+        menuItems.add(new MainDish(1, "Chao Fan", 59));
+        menuItems.add(new MainDish(2, "Siomai-rice", 70));
+        menuItems.add(new MainDish(3, "Lauriat", 120));
+        menuItems.add(new MainDish(4, "Sweet and Sour Pork", 110));
+        menuItems.add(new MainDish(5, "Beef Mami", 95));
+        menuItems.add(new MainDish(6, "Wonton Mami", 85));
+        menuItems.add(new MainDish(7, "Lumpiang Shanghai", 60));
+        menuItems.add(new MainDish(8, "Yang Chow Fried Rice", 75));
+        menuItems.add(new MainDish(9, "Pork Chao Fan", 69));
+        menuItems.add(new MainDish(10, "Chicken Chao Fan", 75));
+        menuItems.add(new MainDish(11, "Spicy Chao Fan", 80));
+        menuItems.add(new MainDish(12, "Egg Fried Rice", 50));
+        menuItems.add(new MainDish(13, "Spicy Siomai Rice", 78));
+        menuItems.add(new MainDish(14, "Beef Wanton Noodles", 90));
+        menuItems.add(new MainDish(15, "Tofu Rice Bowl", 65));
+        menuItems.add(new MainDish(16, "Fish Fillet Lauriat", 130));
+        menuItems.add(new MainDish(17, "Pancit Canton", 60));
+        menuItems.add(new MainDish(18, "Pancit Bihon", 65));
+        menuItems.add(new MainDish(19, "Chopsuey", 70));
+        menuItems.add(new MainDish(20, "Chicken Curry", 115));
+        menuItems.add(new MainDish(21, "Spicy Wings", 120));
+        menuItems.add(new MainDish(22, "Steamed Rice", 40));
+        menuItems.add(new MainDish(23, "Beef Broccoli", 130));
 
         // Beverages
-        menuItems.add(new Beverage(id++, "Coke", 25));
-        menuItems.add(new Beverage(id++, "Sprite", 25));
-        menuItems.add(new Beverage(id++, "Iced-Tea", 30));
-        menuItems.add(new Beverage(id++, "Royal", 25));
-        menuItems.add(new Beverage(id++, "Mountain Dew", 25));
-        menuItems.add(new Beverage(id++, "Bottled Water", 20));
-        menuItems.add(new Beverage(id++, "Pineapple Juice", 30));
-        menuItems.add(new Beverage(id++, "Mango Shake", 40));
-        menuItems.add(new Beverage(id++, "Buko Juice", 35));
-        menuItems.add(new Beverage(id++, "Cucumber Lemonade", 38));
-        menuItems.add(new Beverage(id++, "Sarsi", 25));
-        menuItems.add(new Beverage(id++, "Green Tea", 32));
-        menuItems.add(new Beverage(id++, "Red Iced Tea", 30));
-        menuItems.add(new Beverage(id++, "Wintermelon Milk Tea", 55));
-        menuItems.add(new Beverage(id++, "Taro Milk Tea", 55));
-        menuItems.add(new Beverage(id++, "Matcha Milk Tea", 58));
-        menuItems.add(new Beverage(id++, "Strawberry Smoothie", 50));
-        menuItems.add(new Beverage(id++, "Chocolate Milk", 35));
-        menuItems.add(new Beverage(id++, "Hot Coffee", 20));
-        menuItems.add(new Beverage(id++, "Hot Tea", 18));
-        menuItems.add(new Beverage(id++, "Calamansi Juice", 28));
-        menuItems.add(new Beverage(id++, "Iced Coffee", 40));
-        menuItems.add(new Beverage(id++, "Cocoa Drink", 38));
+        menuItems.add(new Beverage(24, "Coke", 25));
+        menuItems.add(new Beverage(25, "Sprite", 25));
+        menuItems.add(new Beverage(26, "Iced-Tea", 30));
+        menuItems.add(new Beverage(27, "Royal", 25));
+        menuItems.add(new Beverage(28, "Mountain Dew", 25));
+        menuItems.add(new Beverage(29, "Bottled Water", 20));
+        menuItems.add(new Beverage(30, "Pineapple Juice", 30));
+        menuItems.add(new Beverage(31, "Mango Shake", 40));
+        menuItems.add(new Beverage(32, "Buko Juice", 35));
+        menuItems.add(new Beverage(33, "Cucumber Lemonade", 38));
+        menuItems.add(new Beverage(34, "Sarsi", 25));
+        menuItems.add(new Beverage(35, "Green Tea", 32));
+        menuItems.add(new Beverage(36, "Red Iced Tea", 30));
+        menuItems.add(new Beverage(37, "Wintermelon Milk Tea", 55));
+        menuItems.add(new Beverage(38, "Taro Milk Tea", 55));
+        menuItems.add(new Beverage(39, "Matcha Milk Tea", 58));
+        menuItems.add(new Beverage(40, "Strawberry Smoothie", 50));
+        menuItems.add(new Beverage(41, "Chocolate Milk", 35));
+        menuItems.add(new Beverage(42, "Hot Coffee", 20));
+        menuItems.add(new Beverage(43, "Hot Tea", 18));
+        menuItems.add(new Beverage(44, "Calamansi Juice", 28));
+        menuItems.add(new Beverage(45, "Iced Coffee", 40));
+        menuItems.add(new Beverage(46, "Cocoa Drink", 38));
 
         // Desserts
-        menuItems.add(new Dessert(id++, "Halo-Halo", 60));
-        menuItems.add(new Dessert(id++, "Buchi", 40));
-        menuItems.add(new Dessert(id++, "Leche-flan", 50));
-        menuItems.add(new Dessert(id++, "Mais con Yelo", 55));
-        menuItems.add(new Dessert(id++, "Sago't Gulaman", 45));
-        menuItems.add(new Dessert(id++, "Ice Cream Sundae", 35));
-        menuItems.add(new Dessert(id++, "Chocolate Cake", 60));
-        menuItems.add(new Dessert(id++, "Ube Cake", 65));
-        menuItems.add(new Dessert(id++, "Taho", 25));
-        menuItems.add(new Dessert(id++, "Macapuno Delight", 50));
-        menuItems.add(new Dessert(id++, "Fruit Salad", 55));
-        menuItems.add(new Dessert(id++, "Banana Turon", 40));
-        menuItems.add(new Dessert(id++, "Mango Float", 60));
-        menuItems.add(new Dessert(id++, "Cassava Cake", 50));
-        menuItems.add(new Dessert(id++, "Kutsinta", 30));
-        menuItems.add(new Dessert(id++, "Puto", 25));
-        menuItems.add(new Dessert(id++, "Egg Pie", 45));
-        menuItems.add(new Dessert(id++, "Buko Pandan", 55));
-        menuItems.add(new Dessert(id++, "Brownies", 40));
-        menuItems.add(new Dessert(id++, "Crema de Fruta", 60));
-        menuItems.add(new Dessert(id++, "Sticky Rice with Mango", 65));
-        menuItems.add(new Dessert(id++, "Banana Split", 70));
-        menuItems.add(new Dessert(id++, "Gelatin Cup", 20));
+        menuItems.add(new Dessert(47, "Halo-Halo", 60));
+        menuItems.add(new Dessert(48, "Buchi", 40));
+        menuItems.add(new Dessert(49, "Leche-flan", 50));
+        menuItems.add(new Dessert(50, "Mais con Yelo", 55));
+        menuItems.add(new Dessert(51, "Sago't Gulaman", 45));
+        menuItems.add(new Dessert(52, "Ice Cream Sundae", 35));
+        menuItems.add(new Dessert(53, "Chocolate Cake", 60));
+        menuItems.add(new Dessert(54, "Ube Cake", 65));
+        menuItems.add(new Dessert(55, "Taho", 25));
+        menuItems.add(new Dessert(56, "Macapuno Delight", 50));
+        menuItems.add(new Dessert(57, "Fruit Salad", 55));
+        menuItems.add(new Dessert(58, "Banana Turon", 40));
+        menuItems.add(new Dessert(59, "Mango Float", 60));
+        menuItems.add(new Dessert(60, "Cassava Cake", 50));
+        menuItems.add(new Dessert(61, "Kutsinta", 30));
+        menuItems.add(new Dessert(62, "Puto", 25));
+        menuItems.add(new Dessert(63, "Egg Pie", 45));
+        menuItems.add(new Dessert(64, "Buko Pandan", 55));
+        menuItems.add(new Dessert(65, "Brownies", 40));
+        menuItems.add(new Dessert(66, "Crema de Fruta", 60));
+        menuItems.add(new Dessert(67, "Sticky Rice with Mango", 65));
+        menuItems.add(new Dessert(68, "Banana Split", 70));
+        menuItems.add(new Dessert(69, "Gelatin Cup", 20));
 
         // Tabbed menu categories
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -135,7 +134,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createCategoryPanel(Class<? extends MenuItem> type) {
-    	JPanel panel = new JPanel(new GridLayout(0, 4, 20, 20));
+        JPanel panel = new JPanel(new GridLayout(0, 4, 20, 20));
 
         for (MenuItem item : menuItems) {
             if (type.isInstance(item)) {
@@ -240,42 +239,42 @@ public class MainFrame extends JFrame {
     }
 
     private void printReceipt() {
-	    StringBuilder receipt = new StringBuilder("Receipt:\n\n");
-	    double total = 0;
+        StringBuilder receipt = new StringBuilder("Receipt:\n\n");
+        double total = 0;
 
-	    for (MenuItem item : cart) {
-	        receipt.append(item.getName()).append(" - Php ").append(item.getPrice()).append("\n");
-	        total += item.getPrice();
-	    }
+        for (MenuItem item : cart) {
+            receipt.append(item.getName()).append(" - Php ").append(item.getPrice()).append("\n");
+            total += item.getPrice();
+        }
 
-	    receipt.append("\nTotal: Php ").append(total);
+        receipt.append("\nTotal: Php ").append(total);
 
-	    // Show in popup
-	    JOptionPane.showMessageDialog(this, receipt.toString(), "Receipt", JOptionPane.INFORMATION_MESSAGE);
+        // Show in popup
+        JOptionPane.showMessageDialog(this, receipt.toString(), "Receipt", JOptionPane.INFORMATION_MESSAGE);
 
-	    // === Save to Desktop Folder ===
-	    try {
-	        // Get Desktop folder path
-	        String userHome = System.getProperty("user.home");
-	        File receiptFolder = new File(userHome, "Desktop/Chowking_Receipts");
+        // === Save to Desktop Folder ===
+        try {
+            // Get Desktop folder path
+            String userHome = System.getProperty("user.home");
+            File receiptFolder = new File(userHome, "Desktop/Chowking_Receipts");
 
-	        // Create folder if it doesn't exist
-	        if (!receiptFolder.exists()) {
-	            receiptFolder.mkdirs();
-	        }
+            // Create folder if it doesn't exist
+            if (!receiptFolder.exists()) {
+                receiptFolder.mkdirs();
+            }
 
-	        // Save receipt to file with timestamp
-	        String fileName = "Receipt_" + System.currentTimeMillis() + ".txt";
-	        File receiptFile = new File(receiptFolder, fileName);
+            // Save receipt to file with timestamp
+            String fileName = "Receipt_" + System.currentTimeMillis() + ".txt";
+            File receiptFile = new File(receiptFolder, fileName);
 
-	        java.nio.file.Files.write(receiptFile.toPath(), receipt.toString().getBytes());
+            java.nio.file.Files.write(receiptFile.toPath(), receipt.toString().getBytes());
 
-	        System.out.println("Receipt saved to: " + receiptFile.getAbsolutePath());
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        JOptionPane.showMessageDialog(this, "Failed to save receipt: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
+            System.out.println("Receipt saved to: " + receiptFile.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to save receipt: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void clearCart() {
         int confirm = JOptionPane.showConfirmDialog(this, "Clear cart?", "Confirm", JOptionPane.YES_NO_OPTION);
@@ -284,7 +283,6 @@ public class MainFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Cart cleared.");
         }
     }
-
 
     public interface MenuItem {
         int getId();
@@ -338,5 +336,12 @@ public class MainFrame extends JFrame {
         public int getId() { return id; }
         public String getName() { return name; }
         public double getPrice() { return price; }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            MainFrame frame = new MainFrame();
+            frame.setVisible(true);
+        });
     }
 }
