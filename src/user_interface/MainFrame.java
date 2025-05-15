@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainFrame extends JFrame {
     private final List<MenuItem> menuItems = new ArrayList<>();
@@ -133,6 +135,12 @@ public class MainFrame extends JFrame {
         bottomPanel.add(cartButton);
         bottomPanel.add(newOrderButton);
         add(bottomPanel, BorderLayout.SOUTH);
+        
+        JButton showStatsButton = new JButton("Most Ordered Items");
+        showStatsButton.setBackground(Color.PINK);
+        showStatsButton.addActionListener(e -> showMostOrderedItems());
+        bottomPanel.add(showStatsButton);
+
     }
 
     private JPanel createCategoryPanel(Class<? extends MenuItem> type) {
@@ -256,51 +264,92 @@ public class MainFrame extends JFrame {
 
         // === Save to Desktop Folder with formatted date and counter ===
         try {
-            // Get Desktop receipt folder
             String userHome = System.getProperty("user.home");
             File receiptFolder = new File(userHome, "Desktop/Chowking_Receipts");
+            if (!receiptFolder.exists()) receiptFolder.mkdirs();
 
-            // Create folder if not exists
-            if (!receiptFolder.exists()) {
-                receiptFolder.mkdirs();
-            }
-
-            // Load or create receipt counter file
             File counterFile = new File(receiptFolder, "receipt_counter.txt");
             int receiptId = 1;
 
             if (counterFile.exists()) {
                 try (BufferedReader reader = new BufferedReader(new FileReader(counterFile))) {
                     String line = reader.readLine();
-                    if (line != null) {
-                        receiptId = Integer.parseInt(line) + 1;
-                    }
+                    if (line != null) receiptId = Integer.parseInt(line) + 1;
                 }
             }
 
-            // Save next receipt ID
             try (PrintWriter writer = new PrintWriter(new FileWriter(counterFile))) {
                 writer.println(receiptId);
             }
 
-            // Format date
             String dateString = java.time.LocalDateTime.now()
                     .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String receiptIdFormatted = String.format("%04d", receiptId);
 
-            // Final file name
-            String fileName = "receipt_" + dateString + "_" + receiptIdFormatted + ".txt";
-            File receiptFile = new File(receiptFolder, fileName);
-
-            // Write receipt
+            File receiptFile = new File(receiptFolder, "receipt_" + dateString + "_" + receiptIdFormatted + ".txt");
             java.nio.file.Files.write(receiptFile.toPath(), receipt.toString().getBytes());
 
             System.out.println("Receipt saved to: " + receiptFile.getAbsolutePath());
+
+            // *** NEW: Append sales log ***
+            File salesLog = new File(receiptFolder, "sales_log.txt");
+            try (PrintWriter salesWriter = new PrintWriter(new FileWriter(salesLog, true))) {
+                for (MenuItem item : cart) {
+                    salesWriter.println(item.getId() + "," + item.getName() + "," + item.getPrice());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to save receipt: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    
+    private void showMostOrderedItems() {
+        String userHome = System.getProperty("user.home");
+        File salesFile = new File(userHome, "Desktop/Chowking_Receipts/sales_log.txt");
+
+        if (!salesFile.exists()) {
+            JOptionPane.showMessageDialog(this, "No sales data found.");
+            return;
+        }
+
+        Map<String, Integer> countMap = new HashMap<>();
+        Map<String, Double> totalMap = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(salesFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",", 3);
+                if (parts.length == 3) {
+                    String name = parts[1];
+                    double price = Double.parseDouble(parts[2]);
+
+                    countMap.put(name, countMap.getOrDefault(name, 0) + 1);
+                    totalMap.put(name, totalMap.getOrDefault(name, 0.0) + price);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<String> sorted = new ArrayList<>(countMap.keySet());
+        sorted.sort((a, b) -> Integer.compare(countMap.get(b), countMap.get(a)));
+
+        StringBuilder stats = new StringBuilder("Most Ordered Items:\n\n");
+        for (String name : sorted) {
+            stats.append(name)
+                 .append(" - Ordered: ").append(countMap.get(name))
+                 .append(" | Total Sales: Php ").append(String.format("%.2f", totalMap.get(name)))
+                 .append("\n");
+        }
+
+        JOptionPane.showMessageDialog(this, stats.toString(), "Sales Statistics", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
 
 
     private void clearCart() {
@@ -365,4 +414,12 @@ public class MainFrame extends JFrame {
         public String getName() { return name; }
         public double getPrice() { return price; }
     }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            MainFrame frame = new MainFrame();
+            frame.setVisible(true);
+        });
+    }
+
 }
