@@ -22,9 +22,13 @@ public class ReceiptSaver {
             int receiptId = getNextReceiptId();
             String receiptIdFormatted = String.format("%04d", receiptId);
 
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String fileName = RECEIPT_FOLDER_PATH + "/receipt_" + timestamp + ".txt";
+            // Format date for file naming as yyyy-MM-dd
+            String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+            // Construct filename with date and receipt ID
+            String fileName = RECEIPT_FOLDER_PATH + "/receipt_" + dateString + "_" + receiptIdFormatted + ".txt";
+
+            // Write the receipt content
             PrintWriter writer = new PrintWriter(new FileWriter(fileName));
             writer.println("Receipt: " + receiptIdFormatted);
             writer.println();
@@ -58,6 +62,7 @@ public class ReceiptSaver {
         }
 
         int nextId = currentId + 1;
+
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
             writer.println(nextId);
         } catch (IOException e) {
@@ -65,22 +70,5 @@ public class ReceiptSaver {
         }
 
         return nextId;
-    }
-    
-
-    // Modified to accept allMenuItems as argument
-    private static String getMostOrderedItemName(List<MainFrame.MenuItem> allMenuItems) {
-        int mostOrderedItemId = orderTracker.getMostOrderedItem();
-        if (mostOrderedItemId == -1) {
-            return "No orders yet.";
-        }
-
-        for (MainFrame.MenuItem item : allMenuItems) {
-            if (item.getId() == mostOrderedItemId) {
-                return item.getName();
-            }
-        }
-
-        return "Unknown item";
     }
 }

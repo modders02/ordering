@@ -2,8 +2,12 @@ package user_interface;
 
 import lib.Account;
 import lib.LoginData;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Login_Form extends JFrame {
@@ -15,14 +19,37 @@ public abstract class Login_Form extends JFrame {
     protected ArrayList<Account> userAccounts;
     protected ArrayList<Account> adminAccounts;
 
+    private Image backgroundImage;
+
     public Login_Form() {
         setTitle("Chowking Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        getContentPane().setBackground(new Color(240, 230, 140)); // Khaki
-        setLayout(null); // Absolute positioning
+        setResizable(true); // Allow resizing
 
-        LoginData loginData = new LoginData(); // Fetch pre-seeded accounts
+        try {
+            backgroundImage = ImageIO.read(new File("resources\\bg.png")); // Change path if needed
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Background image not found.");
+        }
+
+        // Create background panel
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (backgroundImage != null) {
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        backgroundPanel.setLayout(null); // We'll use absolute positioning for full control
+        setContentPane(backgroundPanel);
+
+        setSize(1000, 600); // Initial size
+        setLocationRelativeTo(null); // Center on screen
+
+        LoginData loginData = new LoginData();
         userAccounts = loginData.getUserAccounts();
         adminAccounts = loginData.getAdminAccounts();
 
@@ -31,23 +58,18 @@ public abstract class Login_Form extends JFrame {
     }
 
     private void initComponents() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = screenSize.width;
-        int screenHeight = screenSize.height;
-
         Font headerFont = new Font("Segoe UI", Font.BOLD, 28);
         Font labelFont = new Font("Segoe UI", Font.BOLD, 16);
 
-        // Header
         JLabel lblHeader = new JLabel("Chowking Login Portal", SwingConstants.CENTER);
         lblHeader.setFont(headerFont);
-        lblHeader.setBounds(0, 60, screenWidth, 40);
+        lblHeader.setForeground(Color.WHITE);
+        lblHeader.setBounds(0, 40, getWidth(), 40);
         add(lblHeader);
 
-        // Center login panel
         JPanel loginPanel = new JPanel(null);
-        loginPanel.setBounds((screenWidth - 400) / 2, (screenHeight - 300) / 2, 400, 250);
-        loginPanel.setBackground(new Color(255, 255, 255, 150)); // Optional: translucent white
+        loginPanel.setBackground(new Color(255, 255, 255, 180));
+        loginPanel.setBounds(300, 150, 400, 250);
         add(loginPanel);
 
         JLabel lblUsername = new JLabel("Username:");
@@ -81,20 +103,19 @@ public abstract class Login_Form extends JFrame {
         btnRegister.setBounds(250, 170, 80, 20);
         loginPanel.add(btnRegister);
 
-        // Admin login button (bottom-right)
         btnAdmin = new JButton("Admin Login");
         btnAdmin.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        btnAdmin.setBounds(screenWidth - 160, screenHeight - 80, 130, 30);
+        btnAdmin.setBounds(830, 500, 130, 30);
         add(btnAdmin);
 
         // Event listeners
         btnLogin.addActionListener(e -> onLogin(usernameField.getText(), new String(passwordField.getPassword())));
         btnRegister.addActionListener(e -> onRegister());
         btnAdmin.addActionListener(e -> onAdminLogin());
-        
-        
+        getRootPane().setDefaultButton(btnLogin);
+
     }
-    
+
     protected void onAdminLogin() {
         String username = JOptionPane.showInputDialog(this, "Enter Admin Username:");
         String password = JOptionPane.showInputDialog(this, "Enter Admin Password:");
@@ -121,13 +142,9 @@ public abstract class Login_Form extends JFrame {
         }
     }
 
-
-    // Abstract methods for implementation in subclass
- // Inside Login_Form.java
     protected void onLogin(String username, String password) {
         boolean isValid = false;
 
-        // Check user accounts first
         for (Account account : userAccounts) {
             if (account.getUsername().equals(username) && account.checkPassword(password)) {
                 isValid = true;
@@ -135,7 +152,6 @@ public abstract class Login_Form extends JFrame {
             }
         }
 
-        // Check admin accounts if not found in user accounts
         if (!isValid) {
             for (Account account : adminAccounts) {
                 if (account.getUsername().equals(username) && account.checkPassword(password)) {
@@ -146,14 +162,13 @@ public abstract class Login_Form extends JFrame {
         }
 
         if (isValid) {
-            // Successful login
             JOptionPane.showMessageDialog(this, "Login successful!");
-            this.dispose(); // Close the login window
-            new MainFrame().setVisible(true); // Open the main order window
+            this.dispose();
+            new MainFrame().setVisible(true);
         } else {
-            // Invalid login
             JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     protected abstract void onRegister();
 }
