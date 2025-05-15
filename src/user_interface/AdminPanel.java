@@ -57,13 +57,13 @@ public class AdminPanel extends JPanel {
 
     // Tab 2 - Most Ordered Items
     private JPanel createMostOrderedPanel() {
-        Map<String, Integer> itemCounts = getItemOrderCounts(new File(RECEIPT_FOLDER_PATH));
-        return new MostOrderedGraphPanel();
+        Map<Integer, Integer> itemCounts = getItemOrderCounts(new File(RECEIPT_FOLDER_PATH));
+        return new MostOrderedGraphPanel(itemCounts);
     }
 
     // Helper method to count ItemID occurrences
-    private Map<String, Integer> getItemOrderCounts(File folder) {
-        Map<String, Integer> itemCounts = new HashMap<>();
+    private Map<Integer, Integer> getItemOrderCounts(File folder) {
+        Map<Integer, Integer> itemCounts = new HashMap<>();
 
         if (!folder.exists() || !folder.isDirectory()) {
             JOptionPane.showMessageDialog(this, "Receipt folder not found: " + RECEIPT_FOLDER_PATH);
@@ -77,7 +77,7 @@ public class AdminPanel extends JPanel {
                     while ((line = reader.readLine()) != null) {
                         if (line.startsWith("ItemID:")) {
                             String itemId = line.split(":")[1].trim();
-                            itemCounts.put(itemId, itemCounts.getOrDefault(itemId, 0) + 1);
+                            itemCounts.put(Integer.parseInt(itemId), itemCounts.getOrDefault(Integer.parseInt(itemId), 0) + 1);
                         }
                     }
                 } catch (IOException e) {
@@ -91,51 +91,11 @@ public class AdminPanel extends JPanel {
 
     // Custom panel for bar graph
     class MostOrderedGraphPanel extends JPanel {
-        private static final String RECEIPT_FOLDER_PATH = System.getProperty("user.home") + "/Desktop/Chowking_Receipts";
-        private final Map<String, Integer> itemCounts = new HashMap<>();
+        private final Map<Integer, Integer> itemCounts;
 
-        public MostOrderedGraphPanel() {
+        public MostOrderedGraphPanel(Map<Integer, Integer> itemCounts) {
             setPreferredSize(new Dimension(800, 500));
-            loadItemCountsFromReceipts();
-        }
-
-        private void loadItemCountsFromReceipts() {
-            File folder = new File(RECEIPT_FOLDER_PATH);
-            if (folder.exists() && folder.isDirectory()) {
-                File[] files = folder.listFiles();
-                if (files != null) {
-                    for (File file : files) {
-                        if (file.isFile() && !file.getName().equalsIgnoreCase("receipt_counter.txt")) {
-                            processReceiptFile(file);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void processReceiptFile(File file) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                boolean inOrderSection = false;
-                while ((line = reader.readLine()) != null) {
-                    line = line.trim();
-                    if (line.contains("Order Summary:")) {
-                        inOrderSection = true;
-                        continue;
-                    }
-                    if (inOrderSection) {
-                        if (line.isEmpty() || line.startsWith("Total") || line.contains("Date:")) continue;
-                        // Example line: "Chao Fan x2 = Php80"
-                        String[] parts = line.split("x");
-                        if (parts.length >= 2) {
-                            String itemName = parts[0].trim();
-                            itemCounts.put(itemName, itemCounts.getOrDefault(itemName, 0) + 1);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            this.itemCounts = itemCounts;
         }
 
         @Override
@@ -163,11 +123,11 @@ public class AdminPanel extends JPanel {
             g.setFont(new Font("SansSerif", Font.BOLD, 16));
             g.drawString("Most Ordered Items", 50, 30);
 
-            List<Map.Entry<String, Integer>> entries = new ArrayList<>(itemCounts.entrySet());
+            List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(itemCounts.entrySet());
             entries.sort((a, b) -> b.getValue() - a.getValue());
 
-            for (Map.Entry<String, Integer> entry : entries) {
-                String itemId = entry.getKey();
+            for (Map.Entry<Integer, Integer> entry : entries) {
+                int itemId = entry.getKey();
                 int count = entry.getValue();
                 int barHeight = (int) (((double) count / maxCount) * (height - topPadding - bottomPadding));
 
@@ -179,7 +139,7 @@ public class AdminPanel extends JPanel {
                 g.drawString(String.valueOf(count), x + 15, height - bottomPadding - barHeight - 5);
 
                 g.setFont(new Font("Arial", Font.PLAIN, 11));
-                g.drawString(itemId, x + 5, height - bottomPadding + 15);
+                g.drawString("Item " + itemId, x + 5, height - bottomPadding + 15);
 
                 x += barWidth + gap;
             }
