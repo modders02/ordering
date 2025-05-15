@@ -66,21 +66,4 @@ public class ReceiptSaver {
 
         return nextId;
     }
-    
-
-    // Modified to accept allMenuItems as argument
-    private static String getMostOrderedItemName(List<MainFrame.MenuItem> allMenuItems) {
-        int mostOrderedItemId = orderTracker.getMostOrderedItem();
-        if (mostOrderedItemId == -1) {
-            return "No orders yet.";
-        }
-
-        for (MainFrame.MenuItem item : allMenuItems) {
-            if (item.getId() == mostOrderedItemId) {
-                return item.getName();
-            }
-        }
-
-        return "Unknown item";
-    }
 }
