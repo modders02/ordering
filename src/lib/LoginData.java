@@ -12,9 +12,9 @@ public class LoginData {
     }
 
     private void seedAccounts() {
-        userAccounts.add(new Account("user1", "pass1"));
-        userAccounts.add(new Account("user2", "pass2"));
-        adminAccounts.add(new Account("admin", "admin123"));
+        userAccounts.add(new Account("elmer", "elmer4321"));
+        userAccounts.add(new Account("marineth", "aneth4321"));
+        adminAccounts.add(new Account("admin", "dangalngbayan"));
     }
 
     public ArrayList<Account> getUserAccounts() {

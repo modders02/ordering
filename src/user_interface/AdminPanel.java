@@ -1,8 +1,6 @@
 package user_interface;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
@@ -12,9 +10,11 @@ import java.nio.file.Files;
 import java.util.*;
 
 public class AdminPanel extends JPanel {
-    private static final String RECEIPT_FOLDER_PATH = System.getProperty("user.home") + "/Desktop/Chowking_Receipts";
-    private final Map<String, Map<String, Integer>> dateToItemFrequency = new HashMap<>();
-
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5249744851877461511L;
+	private static final String RECEIPT_FOLDER_PATH = System.getProperty("user.home") + "/Desktop/Chowking_Receipts";
     private JTabbedPane tabbedPane;
 
     public AdminPanel() {
@@ -80,7 +80,6 @@ public class AdminPanel extends JPanel {
 
                 for (int count : orderCountsByDate.values()) yearlyTotal += count;
 
-                // Build summary text
                 StringBuilder summary = new StringBuilder();
                 for (Map.Entry<String, Integer> entry : orderCountsByDate.entrySet()) {
                     summary.append("We have total of ").append(entry.getValue())
@@ -89,7 +88,6 @@ public class AdminPanel extends JPanel {
                 summary.append("With total of ").append(yearlyTotal)
                         .append(" orders this year and our dear customer is loved it.\n\n");
 
-                // --- Predefined Customer Feedback ---
                 summary.append("Marineth Ramos\n\n");
                 summary.append("I had an amazing experience ordering from this Chowking system. The interface was so smooth,\n");
                 summary.append("and it felt like I was ordering in person! Everything arrived hot and exactly the way I wanted — 10/10 experience.\n\n\n");
@@ -175,7 +173,6 @@ public class AdminPanel extends JPanel {
                             String line;
                             while ((line = br.readLine()) != null) {
                                 line = line.trim();
-                                // Example: "2x Chowking Fried Rice - Php 55.00"
                                 if (line.matches("\\d+x .+ - Php \\d+(\\.\\d{2})?")) {
                                     int xIndex = line.indexOf('x');
                                     int phpIndex = line.indexOf("Php");
@@ -198,7 +195,6 @@ public class AdminPanel extends JPanel {
             }
         }
 
-        // Convert to list and sort by quantity DESC
         List<Map.Entry<String, int[]>> sortedItems = new ArrayList<>(itemStats.entrySet());
         sortedItems.sort((a, b) -> Integer.compare(b.getValue()[0], a.getValue()[0]));
 
@@ -280,7 +276,6 @@ public class AdminPanel extends JPanel {
     private JPanel createKitchenPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // Upper table: Orders data
         String[] orderColumns = {"Order ID", "Item Name", "Quantity", "Status"};
         Object[][] orderData = {
             {"001", "Chowking Fried Rice", 2, "Preparing"},
@@ -291,27 +286,25 @@ public class AdminPanel extends JPanel {
         JTable orderTable = new JTable(orderData, orderColumns);
         JScrollPane orderScrollPane = new JScrollPane(orderTable);
 
-        // Lower table: Kitchen staff data
         String[] staffColumns = {"Name", "Position", "Details"};
         String[][] kitchenData = {
-            {"Elmer Pobadora", "Kitchen Manager", "Information about kitchen"},
-            {"Marineth Ramos", "Head Chef", ""},
-            {"Ezekiel Alinsunurin", "Branch Kitchen Manager", ""},
-            {"Jayson Inot", "Kitchen Staff", ""},
-            {"Grace Fortich", "Kitchen Staff", ""},
-            {"Lyka Rosal", "Kitchen Staff", ""},
-            {"Japhet Delmundo", "Kitchen Staff", ""},
-            {"Jerico Papagayo", "Kitchen Staff", ""},
-            {"Katrina Carrillo", "Kitchen Staff", ""},
-            {"Raymar Garnica", "Kitchen Staff", ""}
+            {"Elmer Pobadora", "Kitchen Manager", "10+ years of experience in kitchen operations and team management."},
+            {"Marineth Ramos", "Head Chef", "Expert in Chinese-Filipino fusion cuisine with 8 years of culinary leadership."},
+            {"Ezekiel Alinsunurin", "Branch Kitchen Manager", "Oversees kitchen safety and inventory across multiple branches."},
+            {"Jayson Inot", "Kitchen Staff", "Specializes in meal prep and sauce blending with 3 years of experience."},
+            {"Grace Fortich", "Kitchen Staff", "Experienced in deep frying and maintaining cleanliness in the kitchen."},
+            {"Lyka Rosal", "Kitchen Staff", "Handles dessert preparation and plating with precision and care."},
+            {"Japhet Delmundo", "Kitchen Staff", "Expert in rice and noodle dishes, efficient in high-pressure environments."},
+            {"Jerico Papagayo", "Kitchen Staff", "Maintains kitchen hygiene and assists in bulk meal preparations."},
+            {"Katrina Carrillo", "Kitchen Staff", "Prepares ingredients and ensures fast service during peak hours."},
+            {"Raymar Garnica", "Kitchen Staff", "Focused on grilling and marination, trained in fast-paced cooking tasks."}
         };
         JTable staffTable = new JTable(kitchenData, staffColumns);
         JScrollPane staffScrollPane = new JScrollPane(staffTable);
 
-        // Split pane - vertical split
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, orderScrollPane, staffScrollPane);
-        splitPane.setDividerLocation(150); // Adjust the initial divider location (height for upper pane)
-        splitPane.setResizeWeight(0.5);    // Distribute extra space evenly
+        splitPane.setDividerLocation(150);
+        splitPane.setResizeWeight(0.5);  
         splitPane.setContinuousLayout(true);
 
         panel.add(splitPane, BorderLayout.CENTER);

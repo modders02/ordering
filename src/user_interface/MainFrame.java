@@ -22,7 +22,6 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Top panel for Logout button
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton logoutButton = new JButton("Logout");
         logoutButton.setBackground(Color.PINK);
@@ -35,14 +34,13 @@ public class MainFrame extends JFrame {
                     JOptionPane.WARNING_MESSAGE
             );
             if (confirm == JOptionPane.YES_OPTION) {
-                dispose(); // Close MainFrame
-                new logins(); // <-- Replace with your actual login form class
+                dispose();
+                new logins(); 
             }
         });
         topPanel.add(logoutButton);
         add(topPanel, BorderLayout.NORTH);
 
-        // Initialize menu items with IDs
         menuItems.add(new MainDish(1, "Chao Fan", 59));
         menuItems.add(new MainDish(2, "Siomai-rice", 70));
         menuItems.add(new MainDish(3, "Lauriat", 120));
@@ -115,7 +113,6 @@ public class MainFrame extends JFrame {
         menuItems.add(new Dessert(68, "Banana Split", 70));
         menuItems.add(new Dessert(69, "Gelatin Cup", 20));
 
-        // Tabbed menu categories
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Main Dish", createCategoryPanel(MainDish.class));
         tabbedPane.addTab("Beverage", createCategoryPanel(Beverage.class));
@@ -259,10 +256,8 @@ public class MainFrame extends JFrame {
 
         receipt.append("\nTotal: Php ").append(total);
 
-        // Show in popup
         JOptionPane.showMessageDialog(this, receipt.toString(), "Receipt", JOptionPane.INFORMATION_MESSAGE);
 
-        // === Save to Desktop Folder with formatted date and counter ===
         try {
             String userHome = System.getProperty("user.home");
             File receiptFolder = new File(userHome, "Desktop/Chowking_Receipts");
@@ -415,11 +410,5 @@ public class MainFrame extends JFrame {
         public double getPrice() { return price; }
     }
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            MainFrame frame = new MainFrame();
-            frame.setVisible(true);
-        });
-    }
 
 }

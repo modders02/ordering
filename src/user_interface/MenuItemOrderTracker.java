@@ -17,7 +17,6 @@ public class MenuItemOrderTracker {
         this.orderCounts = loadOrderCounts();
     }
 
-    // Load order counts from file
     private Map<Integer, Integer> loadOrderCounts() {
         Map<Integer, Integer> counts = new HashMap<>();
         File file = new File(ORDER_COUNT_FILE);
@@ -40,13 +39,11 @@ public class MenuItemOrderTracker {
         return counts;
     }
 
-    // Update the order count for an item
     public void updateOrderCount(int itemId) {
         orderCounts.put(itemId, orderCounts.getOrDefault(itemId, 0) + 1);
         saveOrderCounts();
     }
 
-    // Save order counts to file
     private void saveOrderCounts() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ORDER_COUNT_FILE))) {
             for (Map.Entry<Integer, Integer> entry : orderCounts.entrySet()) {
@@ -57,7 +54,6 @@ public class MenuItemOrderTracker {
         }
     }
 
-    // Get the most ordered item (based on count)
     public int getMostOrderedItem() {
         int mostOrderedId = -1;
         int maxCount = 0;
@@ -72,7 +68,6 @@ public class MenuItemOrderTracker {
         return mostOrderedId;
     }
 
-    // Get the order count of a specific item
     public int getOrderCount(int itemId) {
         return orderCounts.getOrDefault(itemId, 0);
     }

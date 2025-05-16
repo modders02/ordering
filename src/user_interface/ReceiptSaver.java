@@ -9,26 +9,17 @@ public class ReceiptSaver {
 
     private static final String RECEIPT_FOLDER_PATH = System.getProperty("user.home") + "/Desktop/receipts";
     private static final String RECEIPT_COUNTER_FILE = RECEIPT_FOLDER_PATH + "/receipt_counter.txt";
-    private static MenuItemOrderTracker orderTracker = new MenuItemOrderTracker();
-
     public static void saveReceiptToFile(List<MainFrame.MenuItem> cartItems, double total) {
         try {
-            // Ensure the folder exists
             File receiptFolder = new File(RECEIPT_FOLDER_PATH);
             if (!receiptFolder.exists()) {
-                receiptFolder.mkdirs(); // create receipts folder on desktop
+                receiptFolder.mkdirs();
             }
 
             int receiptId = getNextReceiptId();
             String receiptIdFormatted = String.format("%04d", receiptId);
-
-            // Format date for file naming as yyyy-MM-dd
             String dateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-            // Construct filename with date and receipt ID
             String fileName = RECEIPT_FOLDER_PATH + "/receipt_" + dateString + "_" + receiptIdFormatted + ".txt";
-
-            // Write the receipt content
             PrintWriter writer = new PrintWriter(new FileWriter(fileName));
             writer.println("Receipt: " + receiptIdFormatted);
             writer.println();

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+// Singleton Pattern: Only one instance of OrderQueueManager can exist
 class OrderQueueManager {
     private static OrderQueueManager instance;
     private final Queue<Order> orderQueue = new LinkedList<>();
@@ -21,15 +22,15 @@ class OrderQueueManager {
 
     public void addOrder(Order order) {
         orderQueue.offer(order);
-        notifyObservers(order);
+        notifyObservers(order); // Notify all kitchen staff
     }
 
     public Order getNextOrder() {
-        return orderQueue.poll();
+        return orderQueue.poll(); // Get and remove the next order
     }
 
     public void registerObserver(OrderObserver observer) {
-        observers.add(observer);
+        observers.add(observer); // Add kitchen staff as an observer
     }
 
     private void notifyObservers(Order order) {
@@ -39,11 +40,12 @@ class OrderQueueManager {
     }
 }
 
-// Observer Pattern
+// Observer interface
 interface OrderObserver {
     void onOrderReceived(Order order);
 }
 
+// A kitchen staff that listens for new orders
 class KitchenStaff implements OrderObserver {
     private final String name;
 
@@ -57,7 +59,7 @@ class KitchenStaff implements OrderObserver {
     }
 }
 
-// Factory Pattern
+// Base class for menu items
 abstract class MenuItem {
     protected String name;
     protected double price;
@@ -71,6 +73,7 @@ abstract class MenuItem {
     }
 }
 
+// Subclasses for different types of menu items
 class MainDish extends MenuItem {
     public MainDish(String name, double price) {
         this.name = name;
@@ -92,6 +95,7 @@ class Dessert extends MenuItem {
     }
 }
 
+// Represents a customer's order
 class Order {
     private final List<MenuItem> items = new ArrayList<>();
 
@@ -107,11 +111,19 @@ class Order {
 
 class MenuItemFactory {
     public static MenuItem createMenuItem(String type, String name, double price) {
-        return switch (type.toLowerCase()) {
-            case "main" -> new MainDish(name, price);
-            case "beverage" -> new Beverage(name, price);
-            case "dessert" -> new Dessert(name, price);
-            default -> throw new IllegalArgumentException("Unknown menu item type: " + type);
-        };
+        if (type == null) {
+            throw new IllegalArgumentException("Menu item type cannot be null.");
+        }
+
+        switch (type.toLowerCase()) {
+            case "main":
+                return new MainDish(name, price);
+            case "beverage":
+                return new Beverage(name, price);
+            case "dessert":
+                return new Dessert(name, price);
+            default:
+                throw new IllegalArgumentException("Unknown menu item type: " + type);
+        }
     }
 }

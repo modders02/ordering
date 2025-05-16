@@ -63,7 +63,7 @@ public class logins extends Login_Form {
             adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             adminFrame.setSize(1000, 600);
             adminFrame.setLocationRelativeTo(null);
-            adminFrame.add(new AdminPanel()); // You should implement AdminPanel as a JPanel with tabbed panes
+            adminFrame.add(new AdminPanel());
             adminFrame.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(this, "Invalid admin credentials.", "Login Failed", JOptionPane.ERROR_MESSAGE);

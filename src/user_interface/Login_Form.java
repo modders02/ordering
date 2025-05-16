@@ -9,10 +9,15 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class Login_Form extends JFrame {
 
-    protected JTextField usernameField;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3410468184681795646L;
+	protected JTextField usernameField;
     protected JPasswordField passwordField;
     protected JButton btnLogin, btnRegister, btnAdmin;
 
@@ -24,18 +29,22 @@ public abstract class Login_Form extends JFrame {
     public Login_Form() {
         setTitle("Chowking Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(true); // Allow resizing
+        setResizable(true); 
 
         try {
-            backgroundImage = ImageIO.read(new File("resources\\bg.png")); // Change path if needed
+            backgroundImage = ImageIO.read(new File("resources\\bg.png")); 
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Background image not found.");
         }
 
-        // Create background panel
         JPanel backgroundPanel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 5300159756534002322L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (backgroundImage != null) {
@@ -43,11 +52,11 @@ public abstract class Login_Form extends JFrame {
                 }
             }
         };
-        backgroundPanel.setLayout(null); // We'll use absolute positioning for full control
+        backgroundPanel.setLayout(null); 
         setContentPane(backgroundPanel);
 
-        setSize(1000, 600); // Initial size
-        setLocationRelativeTo(null); // Center on screen
+        setSize(1000, 600); 
+        setLocationRelativeTo(null); 
 
         LoginData loginData = new LoginData();
         userAccounts = loginData.getUserAccounts();
@@ -108,7 +117,6 @@ public abstract class Login_Form extends JFrame {
         btnAdmin.setBounds(830, 500, 130, 30);
         add(btnAdmin);
 
-        // Event listeners
         btnLogin.addActionListener(e -> onLogin(usernameField.getText(), new String(passwordField.getPassword())));
         btnRegister.addActionListener(e -> onRegister());
         btnAdmin.addActionListener(e -> onAdminLogin());
@@ -118,29 +126,41 @@ public abstract class Login_Form extends JFrame {
 
     protected void onAdminLogin() {
         String username = JOptionPane.showInputDialog(this, "Enter Admin Username:");
-        String password = JOptionPane.showInputDialog(this, "Enter Admin Password:");
+        JPasswordField passwordField = new JPasswordField();
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.add(new JLabel("Enter Admin Password:"), BorderLayout.NORTH);
+        panel.add(passwordField, BorderLayout.CENTER);
 
-        boolean isAdminValid = false;
-        for (Account account : adminAccounts) {
-            if (account.getUsername().equals(username) && account.checkPassword(password)) {
-                isAdminValid = true;
-                break;
+        int result = JOptionPane.showConfirmDialog(this, panel, "Admin Login",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String password = new String(passwordField.getPassword());
+
+            boolean isAdminValid = false;
+            for (Account account : adminAccounts) {
+                if (account.getUsername().equals(username) && account.checkPassword(password)) {
+                    isAdminValid = true;
+                    break;
+                }
+            }
+
+            if (isAdminValid) {
+                JOptionPane.showMessageDialog(this, "Admin login successful!");
+                this.dispose();
+                JFrame adminFrame = new JFrame("Admin Panel");
+                adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                adminFrame.setSize(1000, 600);
+                adminFrame.setLocationRelativeTo(null);
+                adminFrame.add(new AdminPanel());
+                adminFrame.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid admin credentials.", "Login Failed", JOptionPane.ERROR_MESSAGE);
             }
         }
-
-        if (isAdminValid) {
-            JOptionPane.showMessageDialog(this, "Admin login successful!");
-            this.dispose();
-            JFrame adminFrame = new JFrame("Admin Panel");
-            adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            adminFrame.setSize(1000, 600);
-            adminFrame.setLocationRelativeTo(null);
-            adminFrame.add(new AdminPanel());
-            adminFrame.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid admin credentials.", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        }
     }
+
+
 
     protected void onLogin(String username, String password) {
         boolean isValid = false;
